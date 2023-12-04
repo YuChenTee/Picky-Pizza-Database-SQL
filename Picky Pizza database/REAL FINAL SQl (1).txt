@@ -1,0 +1,78 @@
+QUESTION 1
+
+1)To enhance customer engagement and retention, the pizza company has imple-mented a Loyalty Program. Customers can earn points with each purchase, and based on the total amount spent, customer can redeem these points for rewards like free pizzas or exclusive discounts. The program consists of multiple tiers, of-fering increased benefits as customers accumulate more points, thus encourag-ing higher spending and repeat visits. In order to maintain the loyalty points, cus-tomer must visit the pizza restaurant at a rate for at least once per month. Thus, to identify eligible customers for the Loyalty Program, the company retrieves the transaction history of the customer during their purchase. For example, Ms. Emily Johnson is about to make a transaction, and the company retrieves her one-month transaction history to check if she is eligible for rewards on this purchase.
+
+SELECT * FROM outlet_trans_view 
+WHERE MONTHS_BETWEEN(sysdate, trans_time) < 1
+AND cust_num IN(
+    SELECT cust_num FROM customer 
+    WHERE cust_lname = 'Johnson' 
+    AND cust_fname = 'Emily')
+
+
+
+
+QUESTION 2
+
+2) In celebration of the momentous 1-year anniversary of the 3rd and 4th outlets, the pizza company is delighted to present a limited-time special promotion to its val-ued customers. Customers who had purchased more than two pizzas at the 3rd and 4th outlets are eligible for an enticing discount on their subsequent orders, exclusively available at these two outlets. To find out the customers who are eli-gible for this special promotion, the outlet number, customer telephone number, customer name and order quantity are listed. The data should be ordered based on the outlets.
+
+SELECT outlet.outlet_num AS "Outlet Number",
+cu.cust_tel AS "Customer Telephone",
+(cu.cust_fname || ' ' || cu.cust_lname) AS "Customer Name", 
+SUM(ol.order_quantity) AS "Order Quantity"
+FROM item, order_line ol, orders, outlet, customer cu
+WHERE item.item_num = ol.item_num
+AND ol.order_num = orders.order_num 
+AND orders.outlet_num = outlet.outlet_num 
+AND orders.cust_num = cu.cust_num
+AND outlet.outlet_num IN(3,4) AND item.item_type = 'Pizza'
+GROUP BY outlet.outlet_num, cu.cust_tel, cu.cust_fname, cu.cust_lname
+HAVING SUM(ol.order_quantity) > 2 
+ORDER BY outlet.outlet_num, COUNT(ol.order_quantity)
+
+
+QUESTION 3
+
+3) The pizza company is undertaking a focused product analysis to evaluate the sales performance of ice cream during the entirety of 2022. As part of this analy-sis, a comprehensive list of all items sold in the year 2022 will be meticulously compiled. However, the primary objective of this study is to discover the gross sales figures specifically for ice cream, while the sales data for other items will not be emphasized. By conducting this specific analysis, the company aims to inves-tigate the performance and popularity of ice cream as a product throughout the entire year of 2022, enabling informed decision-making for future business strat-egies. All items sold in 2022 should be listed out but specific gross sales of these product are not needed except for ice cream. The result should be ordered based on gross sales.
+
+SELECT item.item_description, SUM(item.item_price * ol.order_quantity) AS GROSS_SALES
+FROM orders
+INNER JOIN order_line ol ON ol.order_num = orders.order_num
+RIGHT OUTER JOIN item ON item.item_num = ol.item_num
+AND TO_CHAR(orders.order_time, 'YYYY') = '2022'
+AND item.item_description LIKE '%Ice Cream%'
+GROUP BY item.item_description
+ORDER BY SUM(item.item_price * ol.order_quantity)
+
+
+QUESTION 4
+
+4) The pizza company is seeking to obtain comprehensive information about its workforce structure to enhance operational efficiency and communication within the organization. In pursuit of this goal, the company aims to examine the identity of the managers overseeing each employee at every outlet. A list of the workforce structure is produced, containing the manager of the employees in each outlet, the employees, and their positions in the company. The data should be ordered based on the outlet number.
+
+SELECT s.outlet_num, m.staff_fname AS manager_fname, s.staff_fname, s.staff_position 
+FROM staff m, staff s
+WHERE s.manager_id = m.staff_num 
+ORDER BY s.outlet_num
+
+QUESTION 5
+
+5) List the staff whose surnames start with 'Ch' and who have served customers with addresses containin 'Jaya'.
+
+SELECT scv.staff_num, scv.staff_fname|| ' ' || scv.staff_lname AS "Staff Name"
+FROM staff_cust_view scv, customer cu 
+WHERE scv.cust_num = cu.cust_num 
+AND (cu.cust_suburb LIKE '%Jaya%' or cu.cust_street LIKE '%Jaya%') 
+AND scv.staff_lname LIKE 'Ch%'
+
+
+
+
+
+
+
+
+
+
+
+
+
