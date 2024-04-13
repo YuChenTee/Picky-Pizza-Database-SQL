@@ -3,6 +3,7 @@
 Welcome to the "Picky Pizza Palace Database" Oracle SQL assignment repository! Here, you'll find SQL queries developed for various scenarios based on the fictional Picky Pizza Palace business. These queries are designed to demonstrate proficiency in querying and manipulating data within an Oracle SQL environment.
 
 **Assignment Overview**
+
 This repository contains SQL queries developed as part of an assignment focused on database querying and manipulation using Oracle SQL. The assignment revolves around scenarios encountered by Picky Pizza Palace, a fictional pizza company, requiring the development of SQL queries to address specific business needs.
 
 **Assignment Structure**
@@ -32,6 +33,7 @@ This repository contains SQL queries developed as part of an assignment focused 
 - SQL Query: Retrieves staff whose surnames start with 'Ch' and who have served customers with addresses containing 'Jaya'.
   
 **Usage**
+
 To use these SQL scripts, simply execute them in an Oracle SQL environment, ensuring the necessary database schema and tables from the "Picky Pizza Palace Database" are in place. Each query is designed to address the specific requirements outlined in the scenario descriptions.
 
 This repository serves as a comprehensive resource for the Oracle SQL assignment, showcasing proficiency in database querying and manipulation within the context of the Picky Pizza Palace Database. Feel free to explore the assignment report, database population script, and SQL query statements to gain insights into solving real-world business challenges using SQL.
